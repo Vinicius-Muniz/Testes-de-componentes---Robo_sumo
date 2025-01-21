@@ -1,8 +1,8 @@
 // definição de pinos do sensor de linha 1
-const int pinOUT1 = 8;
+const int pinOUT1 = A4;
 
 // definicao de pinos do sensor de linha 2
-const int pinOUT2 = 9;
+const int pinOUT2 = A5;
 
 
 // dados de leitura dos sensores
