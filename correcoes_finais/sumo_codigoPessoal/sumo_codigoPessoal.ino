@@ -36,7 +36,7 @@ float distancia, dist1, dist2, temp_curva, tempo = 0;
 
 float tempo_volta = 900; //tempo necessário para o robo dar uma volta completa com a velocidade de 255 ou 100%
 
-float tempo_dete = 4000; //tempo em que o robo permanece girando até detectar algo 
+float tempo_dete = 5000; //tempo em que o robo permanece girando até detectar algo 
 
 float dist_obstaculo = 50; 
 
@@ -145,10 +145,15 @@ void viraDete(){
   // Enquanto o tempo de giro não for atingido, verifica a distância
   while (millis() - tempo_inicial < tempo_dete) {
     // Verifica se há um obstáculo e se encontrar um, ele empurra o obstaculo
+    delay(900); 
     if (dist() <= dist_obstaculo) {
       para();  // Para o robô se encontrar um obstáculo
       frente(); // empurra o obstaculo
-      break;   // Interrompe o giro
+    
+    }else{
+      para(); 
+      viraR(180); 
+      frente();
     }
   }
 
@@ -186,17 +191,23 @@ void loop() {
     para();
     frente();
   }else{
+    unsigned long tempo_inicial = millis();
     
     // Caso não haja obstáculo, o robô gira indefinidamente para a direta
-    viraDete(); // Realiza o giro indefinido para a direita, ao mesmo tempo em que detecta obstaculo
+    vira(); // Realiza o giro indefinido para a direita, ao mesmo tempo em que detecta obstaculo
+
+    if(tempo_inicial > 4000){
+      para(); 
+      frente(); 
+    }
     
-    //Após o giro, caso o robo nao encontre nada, o robô verifica novamente a distância
+    /*Após o giro, caso o robo nao encontre nada, o robô verifica novamente a distância
     if(dist() > dist_obstaculo){
       // Se não houver obstáculo, ele vira a direita e se move para frente
       para(); 
-      viraR(90); 
+      viraR(180); 
       frente();
-    }
+    }*/
     
     
   }
