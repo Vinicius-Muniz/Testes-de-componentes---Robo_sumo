@@ -144,9 +144,10 @@ void viraDete(){
 
   // Enquanto o tempo de giro não for atingido, verifica a distância
   while (millis() - tempo_inicial < tempo_dete) {
-    // Verifica se há um obstáculo
+    // Verifica se há um obstáculo e se encontrar um, ele empurra o obstaculo
     if (dist() <= dist_obstaculo) {
       para();  // Para o robô se encontrar um obstáculo
+      frente(); // empurra o obstaculo
       break;   // Interrompe o giro
     }
   }
@@ -189,11 +190,13 @@ void loop() {
     // Caso não haja obstáculo, o robô gira indefinidamente para a direta
     viraDete(); // Realiza o giro indefinido para a direita, ao mesmo tempo em que detecta obstaculo
     
-    /*Após o giro, o robô verifica novamente a distância
+    //Após o giro, caso o robo nao encontre nada, o robô verifica novamente a distância
     if(dist() > dist_obstaculo){
-      // Se não houver obstáculo, ele se move para frente
+      // Se não houver obstáculo, ele vira a direita e se move para frente
+      para(); 
+      viraR(90); 
       frente();
-    }*/ 
+    }
     
     
   }
