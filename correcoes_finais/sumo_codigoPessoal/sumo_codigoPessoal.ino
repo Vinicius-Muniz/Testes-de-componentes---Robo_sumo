@@ -36,11 +36,15 @@ float distancia, dist1, dist2, temp_curva, tempo = 0;
 
 float tempo_volta = 900; //tempo necessário para o robo dar uma volta completa com a velocidade de 255 ou 100%
 
+float tempo_dete = 4000; //tempo em que o robo permanece girando até detectar algo 
+
 float dist_obstaculo = 50; 
 
 int vel = 200; //velocidade de locomoção 255 -- 100% | 0 -- 0%
 
 int infra_frente, infra_tras = 0; //variaveis que amazenam o valor referente a absorção de luz no piso da arena
+
+
 
 //função para medir a distancia do objeto com o sonar
 float dist(){
@@ -139,7 +143,7 @@ void viraDete(){
   analogWrite(Rmot2, 10);
 
   // Enquanto o tempo de giro não for atingido, verifica a distância
-  while (millis() - tempo_inicial < temp_curva) {
+  while (millis() - tempo_inicial < tempo_dete) {
     // Verifica se há um obstáculo
     if (dist() <= dist_obstaculo) {
       para();  // Para o robô se encontrar um obstáculo
