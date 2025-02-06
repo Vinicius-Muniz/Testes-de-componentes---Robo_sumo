@@ -129,7 +129,6 @@ void vira(){
 
 //funcao que faz o robo virar e detectar ao mesmo tempo
 void viraDete(){
-  temp_curva = tempo_volta * ang/360; //calcula o tempo que o robo demora para rotacionar ang°
   
   unsigned long tempo_inicial = millis(); // Marca o tempo de início do giro
 
@@ -183,15 +182,15 @@ void loop() {
     frente();
   }else{
     
-    // Caso não haja obstáculo, o robô gira 180 graus
+    // Caso não haja obstáculo, o robô gira indefinidamente para a direta
     viraDete(); // Realiza o giro indefinido para a direita, ao mesmo tempo em que detecta obstaculo
-    delay(1000); // Aguarda um tempo para o giro de 180 graus ser completado (ajuste conforme necessário)
-
-    // Após o giro, o robô verifica novamente a distância
+    
+    /*Após o giro, o robô verifica novamente a distância
     if(dist() > dist_obstaculo){
       // Se não houver obstáculo, ele se move para frente
       frente();
-    }
+    }*/ 
+    
     
   }
 
