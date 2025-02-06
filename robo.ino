@@ -17,23 +17,23 @@
 #define MOTOR_RIGHT_DIR 6
 
 // Parâmetros
-#define DIST_OBSTACLE 80     // distância para considerar obstáculo (cm)
+#define DIST_OBSTACLE 100     // distância para considerar obstáculo (cm)
 
 // TCRT thresholds based on your tests
-#define BACK_LINE_THRESHOLD 440   // TCRT_LEFT reading above 600 means black line
-#define FRONT_LINE_THRESHOLD 200   // TCRT_RIGHT reading above 80 means black line
+#define BACK_LINE_THRESHOLD 400   // TCRT_LEFT reading above 600 means black line
+#define FRONT_LINE_THRESHOLD 600   // TCRT_RIGHT reading above 80 means black line
 
-#define SEARCH_SPEED 60           // velocidade ao girar procurando peso/oponente
-#define PUSH_SPEED   120          // velocidade ao avançar empurrando
+#define SEARCH_SPEED 50           // velocidade ao girar procurando peso/oponente
+#define PUSH_SPEED   100          // velocidade ao avançar empurrando
 
 // Ajuste essa velocidade se quiser girar mais rápido ou mais devagar.
-#define TURNAROUND_SPEED 80       // velocidade ao fazer o giro de 180º
+#define TURNAROUND_SPEED 70       // velocidade ao fazer o giro de 180º
 
 // Ajuste esse tempo (em ms) para aproximar 180º. Vai depender do seu robô.
 // 1000 ms pode ser muito ou pouco, você deve calibrar testando na prática.
-#define TURNAROUND_TIME 1000   
+#define TURNAROUND_TIME 300   
 #define COOLDOWN_TIME 500   
-#define BACKWARD_TIME 500
+#define BACKWARD_TIME 1600
 
 // ============================================================================
 // Enum para a Máquina de Estados
@@ -62,6 +62,12 @@ void pararMotores();
 // Função auxiliar para trocar de estado
 void changeState(RobotState newState) {
   currentState = newState;
+  switch (currentState) {
+    case SEARCH: {Serial.println("search");}
+    case PUSH: {Serial.println("push");}
+    case RETREAT: {Serial.println("retreat");}
+    case COOLDOWN: {Serial.println("cooldown");}  
+  }
   stateStartTime = millis(); // salva o horário de entrada nesse novo estado
 }
 
@@ -128,6 +134,10 @@ void loop() {
 
       // Se detecta a linha ou perde o obstáculo, faz 180º
       bool detectouLinha = (linhaTras > BACK_LINE_THRESHOLD || linhaFrente > FRONT_LINE_THRESHOLD);
+
+      if (!(distFrente < DIST_OBSTACLE)) {
+        changeState(SEARCH);
+      }
       
 
       if (detectouLinha) {
@@ -150,7 +160,7 @@ void loop() {
 
       // Step 1: Move back for BACKWARD_TIME milliseconds
       if (elapsedTime < BACKWARD_TIME) {
-        moverTras(SEARCH_SPEED);
+        moverTras(TURNAROUND_SPEED);
       } 
       // Step 2: Turn around for TURNAROUND_TIME milliseconds
       else if (elapsedTime < (BACKWARD_TIME + TURNAROUND_TIME)) {
